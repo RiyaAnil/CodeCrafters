@@ -11,7 +11,7 @@
         .route-container { padding: 20px; }
     </style>
 </head>
-<body onload="initializeKochiPilgrimage()">
+<body onload="initializeKochiPilgrimage()"> <!-- Corrected function name -->
     <div id="map"></div>
     <div id="route-details" class="route-container"></div>
 
@@ -26,10 +26,10 @@
 
         // Coordinates and descriptions for pilgrimage locations
         const locations = [
-            { name: "Santa Cruz Basilica", lat: 9.9658, lon: 76.2414, description: "Historic Catholic Basilica" },
-            { name: "St. Francis Church", lat: 9.9296, lon: 76.2772, description: "St. Francis Church, one of the oldest European churches in India, built in 1503." },
-            { name: "Jewish Synagogue", lat: 9.9312, lon: 76.2602, description: "A historical synagogue dating back to 1568, reflecting the Jewish heritage of Kochi." },
-            { name: "Ernakulam Shiva Temple ", lat: 9.9714, lon: 76.2831, description: "An Ancient Hindu Temple. " }
+            { name: "Mattancherry Palace", lat: 9.9496, lon: 76.2427, description: "A palace built by the Portuguese, now a museum, showcasing Kerala’s royal history." },
+            { name: "Kerala Folklore Museum", lat: 9.9756, lon: 76.2859, description: "A museum showcasing Kerala's rich cultural heritage with an impressive collection of art, antiques, and folklore." },
+            { name: "Indo-Portuguese Museum", lat: 9.9410, lon: 76.2785, description: "A museum dedicated to showcasing the Indo-Portuguese culture, with historical artifacts and religious art." },
+            { name: "Hill Palace Museum", lat: 9.9875, lon: 76.2883, description: "A former royal residence, now a museum displaying royal artifacts, antiques, and Kerala’s rich history." }
         ];
 
         // Function to calculate the distance between two lat/lng points in meters using Haversine formula

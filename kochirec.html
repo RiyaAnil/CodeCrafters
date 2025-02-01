@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kochi Pilgrimage Route</title>
+    <title>Kochi Recreational Route</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css"/>
     <style>
@@ -11,7 +11,7 @@
         .route-container { padding: 20px; }
     </style>
 </head>
-<body onload="initializeKochiPilgrimage()">
+<body onload="initializeKochiRecreational()">
     <div id="map"></div>
     <div id="route-details" class="route-container"></div>
 
@@ -24,12 +24,12 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Coordinates and descriptions for pilgrimage locations
+        // Coordinates and descriptions for recreational spots in Kochi
         const locations = [
-            { name: "Santa Cruz Basilica", lat: 9.9658, lon: 76.2414, description: "Historic Catholic Basilica" },
-            { name: "St. Francis Church", lat: 9.9296, lon: 76.2772, description: "St. Francis Church, one of the oldest European churches in India, built in 1503." },
-            { name: "Jewish Synagogue", lat: 9.9312, lon: 76.2602, description: "A historical synagogue dating back to 1568, reflecting the Jewish heritage of Kochi." },
-            { name: "Ernakulam Shiva Temple ", lat: 9.9714, lon: 76.2831, description: "An Ancient Hindu Temple. " }
+            { name: "Marine Drive", lat: 9.9812, lon: 76.2871, description: "A scenic promenade offering a stunning view of the backwaters." },
+            { name: "Vypin Island", lat: 10.1101, lon: 76.2863, description: "A peaceful island with beaches and resorts, perfect for relaxation." },
+            { name: "Mangalavanam Bird Sanctuary", lat: 9.9605, lon: 76.2807, description: "A lush green bird sanctuary in the heart of Kochi." },
+            { name: "Fort Kochi Beach", lat: 9.9653, lon: 76.2216, description: "A charming beach with historical sites and a laid-back atmosphere." }
         ];
 
         // Function to calculate the distance between two lat/lng points in meters using Haversine formula
@@ -97,7 +97,7 @@
             }
         }
 
-        function initializeKochiPilgrimage() {
+        function initializeKochiRecreational() {
             // First, get user's location and calculate the shortest path
             getUserLocation();
 
@@ -112,7 +112,7 @@
                 });
             });
 
-            // Adding lines (optional) between the pilgrimage destinations
+            // Adding lines (optional) between the recreational destinations
             var latlngs = locations.map(function(location) {
                 return [location.lat, location.lon];
             });

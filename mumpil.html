@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kochi Pilgrimage Route</title>
+    <title>Mumbai Pilgrimage Spots</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css"/>
     <style>
@@ -11,25 +11,26 @@
         .route-container { padding: 20px; }
     </style>
 </head>
-<body onload="initializeKochiPilgrimage()">
+<body onload="initializeMumbaiPilgrimage()">
     <div id="map"></div>
     <div id="route-details" class="route-container"></div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        var map = L.map('map').setView([9.9312, 76.2673], 12); // Kochi coordinates
+        var map = L.map('map').setView([19.0760, 72.8777], 12); // Mumbai coordinates
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Coordinates and descriptions for pilgrimage locations
-        const locations = [
-            { name: "Santa Cruz Basilica", lat: 9.9658, lon: 76.2414, description: "Historic Catholic Basilica" },
-            { name: "St. Francis Church", lat: 9.9296, lon: 76.2772, description: "St. Francis Church, one of the oldest European churches in India, built in 1503." },
-            { name: "Jewish Synagogue", lat: 9.9312, lon: 76.2602, description: "A historical synagogue dating back to 1568, reflecting the Jewish heritage of Kochi." },
-            { name: "Ernakulam Shiva Temple ", lat: 9.9714, lon: 76.2831, description: "An Ancient Hindu Temple. " }
+        // Coordinates and descriptions for pilgrimage spots in Mumbai
+        const pilgrimageSpots = [
+            { name: "Siddhivinayak Temple", lat: 19.0164, lon: 72.8347, description: "A famous Hindu temple dedicated to Lord Ganesha, located in Prabhadevi." },
+            { name: "Haji Ali Dargah", lat: 18.9590, lon: 72.8058, description: "A mosque and dargah of Pir Haji Ali Shah Bukhari, situated on an islet off the coast of Worli." },
+            { name: "Mahalaxmi Temple", lat: 18.9980, lon: 72.8217, description: "A sacred Hindu temple dedicated to Mahalaxmi, located near the Mahalaxmi railway station." },
+            { name: "Babulnath Temple", lat: 18.9696, lon: 72.8236, description: "An ancient Hindu temple dedicated to Lord Shiva, located at the foot of Malabar Hill." },
+            { name: "ISKCON Temple", lat: 19.0995, lon: 72.8501, description: "A prominent temple of the International Society for Krishna Consciousness, located in Juhu." }
         ];
 
         // Function to calculate the distance between two lat/lng points in meters using Haversine formula
@@ -82,7 +83,7 @@
                     L.marker([userLocation.lat, userLocation.lon]).addTo(map).bindPopup("Your current location").openPopup();
 
                     // Get the shortest path from the user's location to all destinations
-                    const shortestPath = getShortestPath(userLocation, locations);
+                    const shortestPath = getShortestPath(userLocation, pilgrimageSpots);
 
                     // Add the path to the map
                     var latlngs = [userLocation, ...shortestPath.map(loc => [loc.lat, loc.lon])];
@@ -97,12 +98,12 @@
             }
         }
 
-        function initializeKochiPilgrimage() {
+        function initializeMumbaiPilgrimage() {
             // First, get user's location and calculate the shortest path
             getUserLocation();
 
-            // Adding markers for each location
-            locations.forEach(function(location) {
+            // Adding markers for each pilgrimage spot
+            pilgrimageSpots.forEach(function(location) {
                 var marker = L.marker([location.lat, location.lon]).addTo(map);
                 marker.bindPopup(location.description);
 
@@ -112,8 +113,8 @@
                 });
             });
 
-            // Adding lines (optional) between the pilgrimage destinations
-            var latlngs = locations.map(function(location) {
+            // Adding lines (optional) between the pilgrimage spots
+            var latlngs = pilgrimageSpots.map(function(location) {
                 return [location.lat, location.lon];
             });
             var polyline = L.polyline(latlngs, { color: 'blue' }).addTo(map);

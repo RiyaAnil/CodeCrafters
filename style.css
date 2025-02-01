@@ -1,66 +1,88 @@
-body{
-    background-image:url('https://t4.ftcdn.net/jpg/03/60/70/19/360_F_360701965_GJQHPlWtxdXPu6FyPlcpLeKgTwwn6RkD.jpg');
+body {
+    background-image: url('https://t4.ftcdn.net/jpg/03/60/70/19/360_F_360701965_GJQHPlWtxdXPu6FyPlcpLeKgTwwn6RkD.jpg');
     background-size: cover;
     background-repeat: no-repeat;
-    height: 100vh; /* Full height of viewport */
-    width: 100vw;
-}
-button{
-    padding: 12px 24px; 
-    font-size: 40px;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 28px;
     color: white;
-    border-color:blueviolet;
-    border-radius: 8px; 
+    border: 2px solid blueviolet;
+    border-radius: 8px;
     cursor: pointer;
-    height:120px;
-    width:180px;
+    height: 120px;
+    width: 180px;
     background-color: rgb(198, 74, 222);
-    
-
-    
-
-}
-.container1{
-    display:flex;
-    justify-content:center
+    transition: transform 0.2s, background-color 0.2s;
+    margin: 15px;
 }
 
-.container2{
-    display:flex;
-    justify-content:center;
-    margin:30px;
+button:hover {
+    transform: scale(1.05);
+    background-color: rgb(178, 54, 202);
 }
 
-.container3{
-    display:flex;
-    justify-content:center;
-    margin:30px;
+.container1, .container2, .container3, .container4 {
+    display: flex;
+    justify-content: center;
+    margin: 15px;
 }
 
-.container4{
-    display:flex;
-    justify-content:center;
-    margin:30px;
+#map {
+    height: 500px;
+    width: 90vw;
+    max-width: 1200px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
+#route-details {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.back-button {
+    background-color: #4a4a4a;
+    margin: 20px auto;
+    height: auto;
+    width: auto;
+    display: block;
+}
+
+.attraction-card {
+    background: rgba(255,255,255,0.95);
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    text-align: center;
+    color: #2c2c2c;
+}
 #kochi{
-    background-image:url('kochi.jpg') ;
+    background-image:url('kochi.jpg');
 }
-
 #chennai{
-    background-image:url('chennai.jpg'); 
+    background-image:url('chennai.jpg');
 }
-
 #banglore{
-    background-image:url('banglore.jpg'); 
+    background-image:url('banglore.jpg');
 }
-
 #mumbai{
-    background-image:url('mumbai.jpg'); 
+    background-image:url('mumbai.jpg');
 }
-
-
-
-
-

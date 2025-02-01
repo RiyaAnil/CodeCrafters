@@ -1,96 +1,75 @@
 let map;
-let directionsService;
-let directionsRenderer;
-let userLocation = null; // User's current location
-let destinations = []; // List of destinations for the route
-let selectedCity = '';
+let markers = [];
+let routeLine = null;
+let selectedCity = "";
 
 function initMap() {
-    directionsService = new google.maps.DirectionsService();
-    directionsRenderer = new google.maps.DirectionsRenderer();
-
-    // Create a map centered on a default location (you can change this)
-    map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 12,
-        center: { lat: 28.6139, lng: 77.2090 }, // Default to Delhi
-    });
-
-    directionsRenderer.setMap(map);
-
-    // Get the user's current location
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            map.setCenter(userLocation);
-        }, function() {
-            alert("Geolocation is not supported by this browser.");
-        });
-    }
-}
-
-function loadInterests(city) {
-    selectedCity = city;
-    document.getElementById('city-selection').style.display = 'none';
-    document.getElementById('interest-selection').style.display = 'block';
+    map = L.map('map').setView([20.5937, 78.9629], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 }
 
 function loadAttractions(interest) {
-    fetch('http://127.0.0.1:5000/city/${selectedCity}/${interest}')
+    document.getElementById('interest-selection').style.display = 'none';
+    document.getElementById('route-container').style.display = 'block';
+
+    if (!map) {
+        initMap();
+    }
+
+    // Check if geolocation is supported
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+                fetchData(interest, userLat, userLng);
+            },
+            (error) => {
+                console.error("Geolocation error:", error);
+                fetchData(interest); // Proceed without user's location
+            }
+        );
+    } else {
+        fetchData(interest); // Fallback to original logic
+    }
+}
+
+function fetchData(interest, userLat = null, userLng = null) {
+    let url = `http://127.0.0.1:5000/city/${selectedCity}/${interest}`;
+
+    if (userLat && userLng) {
+        url += `?lat=${userLat}&lng=${userLng}`;
+    }
+
+    fetch(url)
         .then(response => response.json())
         .then(data => {
-            const routeDetails = document.getElementById('route-details');
-            routeDetails.innerHTML = '<h2>Personalized Route</h2>';
-            destinations = []; // Reset destinations
-
-            if (data.error) {
-                routeDetails.innerHTML += '<p>${data.error}</p>';
-            } else {
-                data.forEach(attraction => {
-                    routeDetails.innerHTML += `
-                        <h3>${attraction.name}</h3>
-                        <p><strong>Description:</strong> ${attraction.description}</p>
-                        <p><strong>Timings:</strong> ${attraction.timing}</p>
-                        <p><strong>Address:</strong> ${attraction.address}</p>
-                    `;
-                    // Add each destination to the destinations array
-                    destinations.push({ 
-                        name: attraction.name,
-                        location: new google.maps.LatLng(attraction.lat, attraction.lng) // Assuming you get lat/lng from your data
-                    });
-                });
-            }
-
-            // Show the map and plot the route
-            if (destinations.length > 0) {
-                plotRoute();
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching attractions:', error);
+            displayAttractions(data);
         });
 }
 
-function plotRoute() {
-    if (userLocation) {
-        let waypoints = destinations.map(destination => ({
-            location: destination.location,
-            stopover: true
-        }));
+function displayAttractions(attractions) {
+    if (markers.length) {
+        markers.forEach(marker => marker.remove());
+        markers = [];
+    }
 
-        const request = {
-            origin: userLocation,
-            destination: destinations[destinations.length - 1].location, // Last destination
-            waypoints: waypoints.slice(0, -1), // All destinations except the last one
-            travelMode: google.maps.TravelMode.DRIVING, // You can also change it to WALKING, BICYCLING, etc.
-            optimizeWaypoints: true, // Automatically optimizes the route
-        };
+    if (routeLine) {
+        routeLine.remove();
+        routeLine = null;
+    }
 
-        directionsService.route(request, function(result, status) {
-            if (status === google.maps.DirectionsStatus.OK) {
-                directionsRenderer.setDirections(result);
-            } else {
-                alert('Directions request failed due to ' + status);
-            }
-        });
+    attractions.forEach(attraction => {
+        const { lat, lng, name, description, address, timing } = attraction;
+        const marker = L.marker([lat, lng]).addTo(map);
+
+        marker.bindPopup(`<b>${name}</b><br>${description}<br>${address}<br>${timing}`);
+
+        markers.push(marker);
+    });
+
+    if (markers.length > 1) {
+        const latlngs = markers.map(marker => marker.getLatLng());
+        routeLine = L.polyline(latlngs, { color: 'blue' }).addTo(map);
     }
 }

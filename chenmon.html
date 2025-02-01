@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kochi Pilgrimage Route</title>
+    <title>Chennai Historical Monuments and Museums</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css"/>
     <style>
@@ -11,25 +11,25 @@
         .route-container { padding: 20px; }
     </style>
 </head>
-<body onload="initializeKochiPilgrimage()">
+<body onload="initializeChennaiMonuments()">
     <div id="map"></div>
     <div id="route-details" class="route-container"></div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        var map = L.map('map').setView([9.9312, 76.2673], 12); // Kochi coordinates
+        var map = L.map('map').setView([13.0827, 80.2707], 12); // Chennai coordinates
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Coordinates and descriptions for pilgrimage locations
+        // Coordinates and descriptions for Chennai's historical monuments and museums
         const locations = [
-            { name: "Santa Cruz Basilica", lat: 9.9658, lon: 76.2414, description: "Historic Catholic Basilica" },
-            { name: "St. Francis Church", lat: 9.9296, lon: 76.2772, description: "St. Francis Church, one of the oldest European churches in India, built in 1503." },
-            { name: "Jewish Synagogue", lat: 9.9312, lon: 76.2602, description: "A historical synagogue dating back to 1568, reflecting the Jewish heritage of Kochi." },
-            { name: "Ernakulam Shiva Temple ", lat: 9.9714, lon: 76.2831, description: "An Ancient Hindu Temple. " }
+            { name: "Government Museum", lat: 13.0878, lon: 80.2785, description: "A prominent museum featuring historical artifacts, sculptures, and more." },
+            { name: "Fort St. George", lat: 13.0875, lon: 80.2784, description: "A historic British fort that now houses a museum and the Tamil Nadu Legislative Assembly." },
+            { name: "Kapaleeshwarar Temple", lat: 13.0376, lon: 80.2785, description: "An ancient Hindu temple dedicated to Lord Shiva, showcasing Dravidian architecture." },
+            { name: "San Thome Basilica", lat: 13.0281, lon: 80.2811, description: "A Roman Catholic basilica built over the tomb of St. Thomas the Apostle." }
         ];
 
         // Function to calculate the distance between two lat/lng points in meters using Haversine formula
@@ -78,8 +78,20 @@
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     const userLocation = { lat: position.coords.latitude, lon: position.coords.longitude };
-                    // Add a marker for the user's location
-                    L.marker([userLocation.lat, userLocation.lon]).addTo(map).bindPopup("Your current location").openPopup();
+
+                    // Custom icon for the user's location
+                    var userIcon = L.icon({
+                        iconUrl: 'https://example.com/your-location-icon.png',  // Replace with your icon URL
+                        iconSize: [32, 32],  // Size of the icon
+                        iconAnchor: [16, 32], // Anchor point of the icon (where the icon is placed on the marker)
+                        popupAnchor: [0, -32] // Popup positioning relative to the icon
+                    });
+
+                    // Add a marker for the user's location with the custom icon
+                    L.marker([userLocation.lat, userLocation.lon], { icon: userIcon })
+                        .addTo(map)
+                        .bindPopup("Your current location")
+                        .openPopup();
 
                     // Get the shortest path from the user's location to all destinations
                     const shortestPath = getShortestPath(userLocation, locations);
@@ -97,7 +109,7 @@
             }
         }
 
-        function initializeKochiPilgrimage() {
+        function initializeChennaiMonuments() {
             // First, get user's location and calculate the shortest path
             getUserLocation();
 
@@ -112,7 +124,7 @@
                 });
             });
 
-            // Adding lines (optional) between the pilgrimage destinations
+            // Adding lines (optional) between the monuments and museums
             var latlngs = locations.map(function(location) {
                 return [location.lat, location.lon];
             });

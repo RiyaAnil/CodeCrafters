@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kochi Pilgrimage Route</title>
+    <title>Chennai Pilgrimage Route</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css"/>
     <style>
@@ -11,25 +11,26 @@
         .route-container { padding: 20px; }
     </style>
 </head>
-<body onload="initializeKochiPilgrimage()">
+<body onload="initializeChennaiPilgrimage()">
     <div id="map"></div>
     <div id="route-details" class="route-container"></div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        var map = L.map('map').setView([9.9312, 76.2673], 12); // Kochi coordinates
+        var map = L.map('map').setView([13.0827, 80.2707], 12); // Chennai coordinates
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Coordinates and descriptions for pilgrimage locations
-        const locations = [
-            { name: "Santa Cruz Basilica", lat: 9.9658, lon: 76.2414, description: "Historic Catholic Basilica" },
-            { name: "St. Francis Church", lat: 9.9296, lon: 76.2772, description: "St. Francis Church, one of the oldest European churches in India, built in 1503." },
-            { name: "Jewish Synagogue", lat: 9.9312, lon: 76.2602, description: "A historical synagogue dating back to 1568, reflecting the Jewish heritage of Kochi." },
-            { name: "Ernakulam Shiva Temple ", lat: 9.9714, lon: 76.2831, description: "An Ancient Hindu Temple. " }
+        // Coordinates and descriptions for pilgrimage spots in Chennai
+        const pilgrimageLocations = [
+            { name: "Kapaleeshwarar Temple", lat: 13.0248, lon: 80.2325, description: "A prominent temple dedicated to Lord Shiva, located in Mylapore." },
+            { name: "Parthasarathy Temple", lat: 13.0885, lon: 80.2787, description: "An ancient Vaishnavite temple dedicated to Lord Krishna." },
+            { name: "Sri Ashtalakshmi Temple", lat: 13.0239, lon: 80.2503, description: "A temple dedicated to the eight forms of Goddess Lakshmi." },
+            { name: "San Thome Basilica", lat: 13.0637, lon: 80.2821, description: "A Roman Catholic minor basilica dedicated to St. Thomas the Apostle." },
+            { name: "Vadapalani Murugan Temple", lat: 13.0513, lon: 80.2117, description: "A famous temple dedicated to Lord Murugan, located in Vadapalani." }
         ];
 
         // Function to calculate the distance between two lat/lng points in meters using Haversine formula
@@ -82,7 +83,7 @@
                     L.marker([userLocation.lat, userLocation.lon]).addTo(map).bindPopup("Your current location").openPopup();
 
                     // Get the shortest path from the user's location to all destinations
-                    const shortestPath = getShortestPath(userLocation, locations);
+                    const shortestPath = getShortestPath(userLocation, pilgrimageLocations);
 
                     // Add the path to the map
                     var latlngs = [userLocation, ...shortestPath.map(loc => [loc.lat, loc.lon])];
@@ -97,12 +98,12 @@
             }
         }
 
-        function initializeKochiPilgrimage() {
+        function initializeChennaiPilgrimage() {
             // First, get user's location and calculate the shortest path
             getUserLocation();
 
-            // Adding markers for each location
-            locations.forEach(function(location) {
+            // Adding markers for each pilgrimage location
+            pilgrimageLocations.forEach(function(location) {
                 var marker = L.marker([location.lat, location.lon]).addTo(map);
                 marker.bindPopup(location.description);
 
@@ -113,7 +114,7 @@
             });
 
             // Adding lines (optional) between the pilgrimage destinations
-            var latlngs = locations.map(function(location) {
+            var latlngs = pilgrimageLocations.map(function(location) {
                 return [location.lat, location.lon];
             });
             var polyline = L.polyline(latlngs, { color: 'blue' }).addTo(map);
