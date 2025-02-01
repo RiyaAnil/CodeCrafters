@@ -1,0 +1,42 @@
+
+    button{
+        padding: 12px 24px; 
+        font-size: 28px;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        color:black;
+        border-color:blueviolet;
+        border-radius: 8px; 
+        cursor: pointer;
+        height:120px;
+        width:180px;
+        background-color: rgb(198, 74, 222);
+
+}
+.container1{
+    display:flex;
+    justify-content:center
+}
+
+.container2{
+    display:flex;
+    justify-content:center;
+    margin:30px;
+}
+
+.container3{
+    display:flex;
+    justify-content:center;
+    margin:30px;
+}
+
+#pili{
+    background-image:url('pili.jpg ');
+}
+#monu{
+    background-image:url('monu.jpg ');
+}
+
+#recrea{
+    background-image:url('recrea.jpg ');
+}
+

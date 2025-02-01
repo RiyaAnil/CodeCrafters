@@ -1,0 +1,66 @@
+body{
+    background-image:url('https://t4.ftcdn.net/jpg/03/60/70/19/360_F_360701965_GJQHPlWtxdXPu6FyPlcpLeKgTwwn6RkD.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh; /* Full height of viewport */
+    width: 100vw;
+}
+button{
+    padding: 12px 24px; 
+    font-size: 40px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
+    border-color:blueviolet;
+    border-radius: 8px; 
+    cursor: pointer;
+    height:120px;
+    width:180px;
+    background-color: rgb(198, 74, 222);
+    
+
+    
+
+}
+.container1{
+    display:flex;
+    justify-content:center
+}
+
+.container2{
+    display:flex;
+    justify-content:center;
+    margin:30px;
+}
+
+.container3{
+    display:flex;
+    justify-content:center;
+    margin:30px;
+}
+
+.container4{
+    display:flex;
+    justify-content:center;
+    margin:30px;
+}
+
+#kochi{
+    background-image:url('kochi.jpg') ;
+}
+
+#chennai{
+    background-image:url('chennai.jpg'); 
+}
+
+#banglore{
+    background-image:url('banglore.jpg'); 
+}
+
+#mumbai{
+    background-image:url('mumbai.jpg'); 
+}
+
+
+
+
+
