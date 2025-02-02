@@ -11,16 +11,16 @@
 - Member 3: [Riya Anil] - [MEC]
 
 ### Hosted Project Link
-[]
+[https://riyaanil.github.io/CodeCrafters/]
 
 ### Project Description
-[]
+[This project was created to make the exploration of indian cities as fun as possible by providing the user with personalised tour routes based on their interests]
 
 ### The Problem statement
-[]
+[Tour guides often presents generic tour routes that may not help in the exploration of a city to the maximum.Touriest therefore are left unsatisfied since they are not able to enjoy the city to the fullest. ]
 
 ### The Solution
-[How are you solving it? Keep it fun!]
+[we have provided alternative tour routes to explore the city based on the individuals interest,be it pilgrimage,legacy trail or a rustic picnic ]
 
 ## Technical Details
 ### Technologies/Components Used
@@ -41,35 +41,27 @@ For Software:
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
+![Homepage](https://drive.google.com/file/d/1t36QVG6UdmdGXD2Jidj5YOhXrYFSAkZE/view?usp=sharing)
 Add caption explaining what this shows
 
-![Screenshot2](Add screenshot 2 here with proper name)
+![next page](https://drive.google.com/file/d/1Lpts8mOTjYlrnVNtSy7uBVeXshJdPME-/view?usp=drive_link)
 Add caption explaining what this shows
 
-![Screenshot3](Add screenshot 3 here with proper name)
+![kochi-piligrimage-map](https://drive.google.com/file/d/1uATirmcAvC6mHgCVlslOC5JNHqVVniFq/view?usp=drive_link)
 Add caption explaining what this shows
+
+![kochi-recreational-map](https://drive.google.com/file/d/1TYJo-TRB2sb5uOPboQiD3MsJaCW4m9R5/view?usp=sharing)
 
 # Build Photos
-![Team](Add photo of your team here)
+[CodeCrafters](https://drive.google.com/file/d/14Md9eS4MjexFv0MwPU2w2qY7n_e1cJHs/view?usp=drive_link)
 
 
-![Components](Add photo of your components here)
-List out all components shown
-
-![Build](Add photos of build process here)
-Explain the build steps
-
-![Final](Add photo of final product here)
-Explain the final build
 
 ### Project Demo
 # Video
 [Add your demo video link here]
 Explain what the video demonstrates
 
-# Additional Demos
-[Add any extra demo materials/links]
 
 ## Team Contributions
 - [Name 1]: [Specific contributions]
