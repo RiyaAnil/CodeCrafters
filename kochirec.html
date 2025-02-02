@@ -3,121 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kochi Recreational Route</title>
+    <title>Kochi Recreational Routes</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css"/>
     <style>
-        #map { height: 100vh; }
-        .route-container { padding: 20px; }
+        #map { height: 90vh; }
+        .route-container { padding: 10px; text-align: center; }
+        button { padding: 10px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
-<body onload="initializeKochiRecreational()">
+<body>
     <div id="map"></div>
-    <div id="route-details" class="route-container"></div>
+    <div class="route-container">
+        <button onclick="nextRoute()">Next Route</button>
+    </div>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        var map = L.map('map').setView([9.9312, 76.2673], 12); // Kochi coordinates
-
+        var map = L.map('map').setView([9.9312, 76.2673], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+            attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // Coordinates and descriptions for recreational spots in Kochi
-        const locations = [
-            { name: "Marine Drive", lat: 9.9812, lon: 76.2871, description: "A scenic promenade offering a stunning view of the backwaters." },
-            { name: "Vypin Island", lat: 10.1101, lon: 76.2863, description: "A peaceful island with beaches and resorts, perfect for relaxation." },
-            { name: "Mangalavanam Bird Sanctuary", lat: 9.9605, lon: 76.2807, description: "A lush green bird sanctuary in the heart of Kochi." },
-            { name: "Fort Kochi Beach", lat: 9.9653, lon: 76.2216, description: "A charming beach with historical sites and a laid-back atmosphere." }
+        // Different sets of locations for multiple routes (with descriptions)
+        const routes = [
+            [
+                { name: "Marine Drive", lat: 9.9812, lon: 76.2871, description: "A picturesque promenade in Kochi with beautiful backwater views." },
+                { name: "Vypin Island", lat: 10.1101, lon: 76.2863, description: "A beautiful island known for its beaches and scenic ferry rides." },
+                { name: "Mangalavanam Bird Sanctuary", lat: 9.9605, lon: 76.2807, description: "A green lung of Kochi, home to various migratory birds." },
+                { name: "Fort Kochi Beach", lat: 9.9653, lon: 76.2216, description: "A historic beach with stunning sunsets and Chinese fishing nets." }
+            ],
+            [
+                { name: "Cherai Beach", lat: 10.1514, lon: 76.1900, description: "A serene beach famous for its golden sands and calm waters." },
+                { name: "Bolgatty Palace", lat: 9.9817, lon: 76.2632, description: "A beautiful heritage palace converted into a luxury resort." },
+                { name: "Hill Palace", lat: 9.9272, lon: 76.3223, description: "Kerala's largest archaeological museum, showcasing royal artifacts." },
+                { name: "Wonderla Kochi", lat: 10.0269, lon: 76.4001, description: "A thrilling amusement park with exciting rides and water attractions." }
+            ]
         ];
 
-        // Function to calculate the distance between two lat/lng points in meters using Haversine formula
-        function getDistance(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the Earth in kilometers
-            var dLat = (lat2 - lat1) * Math.PI / 180;
-            var dLon = (lon2 - lon1) * Math.PI / 180;
-            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var distance = R * c * 1000; // in meters
-            return distance;
+        var currentRouteIndex = 0;
+        var polylineLayer;
+        var markers = [];
+
+        function clearMap() {
+            if (polylineLayer) map.removeLayer(polylineLayer);
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
         }
 
-        // Function to calculate the shortest path (greedy approach)
-        function getShortestPath(userLocation, locations) {
-            var path = [];
-            var remainingLocations = [...locations];
-            var currentLocation = userLocation;
-
-            // Greedily select the nearest location and add to path
-            while (remainingLocations.length > 0) {
-                let closestLocation = null;
-                let minDistance = Infinity;
-
-                for (let i = 0; i < remainingLocations.length; i++) {
-                    const distance = getDistance(currentLocation.lat, currentLocation.lon, remainingLocations[i].lat, remainingLocations[i].lon);
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closestLocation = remainingLocations[i];
-                    }
-                }
-
-                // Add closest location to path and remove it from remaining locations
-                path.push(closestLocation);
-                currentLocation = closestLocation;
-                remainingLocations = remainingLocations.filter(loc => loc !== closestLocation);
-            }
-
-            return path;
-        }
-
-        // Function to get user's current location
-        function getUserLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const userLocation = { lat: position.coords.latitude, lon: position.coords.longitude };
-                    // Add a marker for the user's location
-                    L.marker([userLocation.lat, userLocation.lon]).addTo(map).bindPopup("Your current location").openPopup();
-
-                    // Get the shortest path from the user's location to all destinations
-                    const shortestPath = getShortestPath(userLocation, locations);
-
-                    // Add the path to the map
-                    var latlngs = [userLocation, ...shortestPath.map(loc => [loc.lat, loc.lon])];
-                    L.polyline(latlngs, { color: 'red' }).addTo(map);
-
-                    // Adjust the map view to fit all the locations (user's location and destinations)
-                    var bounds = L.latLngBounds(latlngs);
-                    map.fitBounds(bounds);
-                });
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
-        }
-
-        function initializeKochiRecreational() {
-            // First, get user's location and calculate the shortest path
-            getUserLocation();
-
-            // Adding markers for each location
-            locations.forEach(function(location) {
+        function showRoute(route) {
+            clearMap();
+            var latlngs = route.map(loc => [loc.lat, loc.lon]);
+            polylineLayer = L.polyline(latlngs, { color: 'red' }).addTo(map);
+            map.fitBounds(polylineLayer.getBounds());
+            
+            route.forEach(location => {
                 var marker = L.marker([location.lat, location.lon]).addTo(map);
-                marker.bindPopup(location.description);
-
-                // You can add a mouseover effect to show popup on cursor hover
-                marker.on('mouseover', function(e) {
-                    this.openPopup();
-                });
+                marker.bindPopup(`<b>${location.name}</b><br>${location.description}`);
+                marker.bindTooltip(location.description, { permanent: false, direction: "top" }); // Tooltip on hover
+                markers.push(marker);
             });
-
-            // Adding lines (optional) between the recreational destinations
-            var latlngs = locations.map(function(location) {
-                return [location.lat, location.lon];
-            });
-            var polyline = L.polyline(latlngs, { color: 'blue' }).addTo(map);
         }
+
+        function nextRoute() {
+            currentRouteIndex = (currentRouteIndex + 1) % routes.length;
+            showRoute(routes[currentRouteIndex]);
+        }
+
+        // Initialize first route
+        showRoute(routes[currentRouteIndex]);
     </script>
 </body>
 </html>
