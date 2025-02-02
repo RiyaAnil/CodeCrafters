@@ -64,9 +64,9 @@ Explain what the video demonstrates
 
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- [Bhavana]: [worked on the maps api ]
+- [Niranjana]: [worked on front end]
+- [Riya]: [worked on back end]
 
 ---
 Made with ❤️ at TinkerHub
